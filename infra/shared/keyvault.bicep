@@ -1,5 +1,6 @@
-param name string
 param location string = resourceGroup().location
+param abbrs object
+param resourceToken string
 param tags object = {}
 
 @description('Service principal that should be granted read access to the KeyVault. If unset, no service principal is granted access by default')
@@ -28,8 +29,11 @@ var defaultAccessPolicies = !empty(principalId) ? [
   }
 ] : []
 
+// Functions for building resource names based on a naming convention
+func buildProjectResourceName(abbr string, envName string, token string) string => toLower('${abbr}${envName}-${token}')
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-  name: name
+  name: buildProjectResourceName(abbrs.keyVaultVaults, environmentName, resourceToken)
   location: location
   tags: tags
   properties: {

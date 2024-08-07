@@ -24,10 +24,10 @@ hooks:
             shell: sh
             run: ./.azd/hooks/postprovision.sh
 parameters:
-    environmentName: ${ENVIRONMENT_NAME}
-    location: ${LOCATION}
-    pineconeApiKey: ${PINECONE_API_KEY}
-    azureContainerName: ${AZURE_CONTAINER_NAME}
-    azureStorageSubscription: ${AZURE_STORAGE_SUBSCRIPTION}
-    pineconeAssistantName: ${PINECONE_ASSISTANT_NAME}
-    keyVaultName: ${KEY_VAULT_NAME}
+    environmentName: "[parameters('environmentName')]"
+    location: "[parameters('location')]"
+    pineconeApiKey: "[parameters('pineconeApiKey')]"
+    azureContainerName: "[parameters('azureContainerName')]"
+    azureStorageSubscription: "[parameters('azureStorageSubscription')]"
+    pineconeAssistantName: "[parameters('pineconeAssistantName')]"
+    keyVaultName: "[parameters('keyVaultName')]"

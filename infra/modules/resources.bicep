@@ -10,10 +10,11 @@ param tags object
 
 // Functions for building resource names based on a naming convention
 func buildProjectResourceName(abbr string, envName string, token string) string => toLower('${abbr}${envName}-${token}')
+func buildProjectResourceNameNoDash(abbr string, envName string, token string) string => toLower('${abbr}${envName}${token}')
 
 // Storage Account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: buildProjectResourceName(abbrs.storageStorageAccounts, environmentName, resourceToken)
+  name: buildProjectResourceNameNoDash(abbrs.storageStorageAccounts, environmentName, resourceToken)
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -41,7 +42,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   location: location
   sku: {
     tier: 'Basic'
-    size: 'B1'
+    name: 'B1'
   }
   tags: tags
 }

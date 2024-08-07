@@ -68,7 +68,8 @@ module keyVault 'shared/keyvault.bicep' = {
   name: 'deployKeyVault'
   scope: resourceGroup
   params: {
-    name: keyVaultName
+    abbrs: abbrs
+    resourceToken: resourceToken
     location: location
     environmentName: environmentName
     pineconeApiKey: pineconeApiKey
