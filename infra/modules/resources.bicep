@@ -48,7 +48,6 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
 }
 
 // Web App
-// ... existing code ...
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   name: buildProjectResourceName(abbrs.webSitesAppService, environmentName, resourceToken)
   location: location
