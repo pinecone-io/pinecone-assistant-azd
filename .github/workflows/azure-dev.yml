@@ -24,6 +24,8 @@ jobs:
       AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+      PINECONE_ASSISTANT_NAME: ${{ vars.PINECONE_ASSISTANT_NAME || 'example-assistant' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
