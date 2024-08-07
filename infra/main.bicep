@@ -12,9 +12,6 @@ param location string
 @description('API Key for Pinecone')
 param pineconeApiKey string
 
-@description('Region for Pinecone')
-param pineconeRegion string
-
 @description('Name of the Azure Blob Container')
 param azureContainerName string
 
@@ -23,6 +20,9 @@ param azureStorageSubscription string
 
 @description('Assistant Name for Pinecone')
 param pineconeAssistantName string
+
+@description('Name of the Key Vault')
+param keyVaultName string
 
 // Load abbreviations from the JSON file
 var abbrs = loadJsonContent('./abbreviations.json')
@@ -56,7 +56,6 @@ module resources 'modules/resources.bicep' = {
     resourceToken: resourceToken
     abbrs: abbrs
     pineconeApiKey: pineconeApiKey
-    pineconeRegion: pineconeRegion
     azureContainerName: azureContainerName
     azureStorageSubscription: azureStorageSubscription
     pineconeAssistantName: pineconeAssistantName
@@ -64,7 +63,24 @@ module resources 'modules/resources.bicep' = {
   }
 }
 
+// Module to deploy Key Vault and secrets
+module keyVault 'shared/keyvault.bicep' = {
+  name: 'deployKeyVault'
+  scope: resourceGroup
+  params: {
+    name: keyVaultName
+    location: location
+    environmentName: environmentName
+    pineconeApiKey: pineconeApiKey
+    azureContainerName: azureContainerName
+    azureStorageSubscription: azureStorageSubscription
+    pineconeAssistantName: pineconeAssistantName
+  }
+}
+
 // Outputs
 output storageAccountName string = resources.outputs.storageAccountName
 output containerName string = resources.outputs.containerName
 output webAppUrl string = resources.outputs.webAppUrl
+output keyVaultEndpoint string = keyVault.outputs.endpoint
+output keyVaultName string = keyVault.outputs.name

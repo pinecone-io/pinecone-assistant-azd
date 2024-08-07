@@ -3,7 +3,6 @@ param location string
 param resourceToken string
 param abbrs object
 param pineconeApiKey string
-param pineconeRegion string
 param azureContainerName string
 param azureStorageSubscription string
 param pineconeAssistantName string
@@ -58,10 +57,6 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
         {
           name: 'PINECONE_API_KEY'
           value: pineconeApiKey
-        }
-        {
-          name: 'PINECONE_REGION'
-          value: pineconeRegion
         }
         {
           name: 'AZURE_CONTAINER_NAME'

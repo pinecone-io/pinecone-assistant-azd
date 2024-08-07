@@ -24,6 +24,7 @@ jobs:
       AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_CONTAINER_NAME: ${{ vars.AZURE_CONTAINER_NAME || 'pinecone-assistant-storage' }}
       PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
       PINECONE_ASSISTANT_NAME: ${{ vars.PINECONE_ASSISTANT_NAME || 'example-assistant' }}
     steps:
