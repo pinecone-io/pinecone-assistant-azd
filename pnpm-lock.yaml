@@ -2796,7 +2796,7 @@ packages:
       busboy: 1.6.0
       caniuse-lite: 1.0.30001645
       graceful-fs: 4.2.11
-      postcss: 8.4.31
+      postcss: ">=8.4.31"
       react: 18.0.0
       react-dom: 18.0.0(react@18.0.0)
       styled-jsx: 5.1.1(react@18.0.0)
