@@ -9,26 +9,23 @@ param environmentName string
 @description('Primary location for all resources')
 param location string
 
-@description('API Key for Pinecone')
-param pineconeApiKey string
-
 @description('Name of the Azure Blob Container')
 param azureContainerName string
-
-@description('Azure Storage Subscription ID')
-param azureStorageSubscription string
-
-@description('Assistant Name for Pinecone')
-param pineconeAssistantName string
-
-@description('Name of the Key Vault')
-param keyVaultName string
 
 // Load abbreviations from the JSON file
 var abbrs = loadJsonContent('./abbreviations.json')
 
+// This file is created by a `preprovision` hook - if you're seeing an error here and elsewhere because this file doesn't exist, run `.azd/scripts/create-infra-env-vars.ps1` directly or via `azd provision` to create the file
+var envVars = loadJsonContent('./env-vars.json')
+
+var projectName = envVars.PROJECT_NAME
+var webAppServiceName = envVars.SERVICE_WEB_SERVICE_NAME || 'web'
+var pineconeApiKey = envVars.PINECONE_API_KEY
+var pineconeAssistantName = envVars.PINECONE_ASSISTANT_NAME
+var azureStorageSubscription = envVars.AZURE_STORAGE_SUBSCRIPTION
+
 // Generate a unique token to be used in naming resources
-var resourceToken = take(toLower(uniqueString(subscription().id, environmentName, location)), 4)
+var resourceToken = take(toLower(uniqueString(subscription().id, projectName, environmentName, location)), 4)
 
 // Functions for building resource names based on a naming convention
 func buildResourceGroupName(abbr string, envName string) string => toLower('${abbr}${envName}')

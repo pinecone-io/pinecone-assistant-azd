@@ -95,7 +95,7 @@ if [[ ! -f $template_path ]]; then
     exit 0
 fi
 
-output_path="$script_dir/../../.env"
+output_path="$script_dir/../../.env.local"
 
 if [[ -f $output_path ]]; then
     # We only want to create the `.env` file if it does not already exist

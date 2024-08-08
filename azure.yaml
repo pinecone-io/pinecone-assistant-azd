@@ -2,10 +2,10 @@
 
 name: pinecone-assistant-azd
 metadata:
-    template: azd-init@1.9.5
+    template: pinecone-assistant-azd@0.0.1
 services:
-    pinecone-assistant-azd:
-        project: .
+    web:
+        project: ./
         host: containerapp
         language: ts
 hooks:

@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "env:init": "bash ./.azd/scripts/create-env-local.sh",
     "dev": "next dev",
     "build": "next build",
+    "env:init": "bash ./.azd/scripts/create-env.sh",
+    "env:dv": "bash ./.azd/scripts/read-domain-verification-vars.sh",
     "start": "next start",
     "lint": "next lint"
   },
