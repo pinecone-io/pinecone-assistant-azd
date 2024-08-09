@@ -85,6 +85,7 @@ export default function Home({ initialShowAssistantFiles, showCitations }: HomeP
     try {
       const response = await fetch('/api/assistants')
       const data = await response.json()
+      console.log(data)
       
       setLoading(false)
       setAssistantExists(data.exists)

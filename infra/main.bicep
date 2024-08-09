@@ -19,10 +19,10 @@ var abbrs = loadJsonContent('./abbreviations.json')
 var envVars = loadJsonContent('./env-vars.json')
 
 var projectName = envVars.PROJECT_NAME
-var webAppServiceName = envVars.SERVICE_WEB_SERVICE_NAME || 'web'
+var webAppServiceName = envVars.WEB_APP_SERVICE_NAME
 var pineconeApiKey = envVars.PINECONE_API_KEY
 var pineconeAssistantName = envVars.PINECONE_ASSISTANT_NAME
-var azureStorageSubscription = envVars.AZURE_STORAGE_SUBSCRIPTION
+var azureSubscription = envVars.AZURE_SUBSCRIPTION_ID
 
 // Generate a unique token to be used in naming resources
 var resourceToken = take(toLower(uniqueString(subscription().id, projectName, environmentName, location)), 4)
@@ -54,8 +54,9 @@ module resources 'modules/resources.bicep' = {
     abbrs: abbrs
     pineconeApiKey: pineconeApiKey
     azureContainerName: azureContainerName
-    azureStorageSubscription: azureStorageSubscription
+    azureSubscription: azureStorageSubscription
     pineconeAssistantName: pineconeAssistantName
+    webAppServiceName: webAppServiceName
     tags: tags
   }
 }

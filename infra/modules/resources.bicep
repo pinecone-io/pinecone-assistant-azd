@@ -64,8 +64,8 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
           value: azureContainerName
         }
         {
-          name: 'AZURE_STORAGE_SUBSCRIPTION'
-          value: azureStorageSubscription
+          name: 'AZURE_SUBSCRIPTION_ID'
+          value: azureSubscription
         }
         {
           name: 'PINECONE_ASSISTANT_NAME'
