@@ -6,6 +6,7 @@ import os
 storage_account_connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 container_name = os.getenv("AZURE_CONTAINER_NAME")
 pinecone_api_key = os.getenv("PINECONE_API_KEY")
+pinecone_assistant = os.getenv("PINECONE_ASSISTANT_NAME")
 
 # Initialize Pinecone client
 pc = Pinecone(api_key=pinecone_api_key)
@@ -28,14 +29,34 @@ def download_blob(blob_name):
 
     return download_file_path
 
+def upload_blob(file_path):
+    blob_service_client = BlobServiceClient.from_connection_string(storage_account_connection_string)
+    container_client = blob_service_client.get_container_client(container_name)
+    blob_client = container_client.get_blob_client(os.path.basename(file_path))
+
+    with open(file_path, "rb") as data:
+        blob_client.upload_blob(data)
+
+    print(f"File {file_path} uploaded to blob storage.")
+
 def create_pinecone_assistant():
-    metadata = {"author": "Cory Waddingham", "version": "0.1"}
+    metadata = {"application": "AZD Template example", "version": "0.1"}
     assistant = pc.assistant.create_assistant(
         assistant_name=os.getenv("PINECONE_ASSISTANT_NAME") or "example-assistant",
         metadata=metadata, 
         timeout=30  # Wait 30 seconds for assistant operation to complete.
     )
     return assistant
+
+def get_assistant(assistant_name):
+    try:
+        response = pc.assistant.Assistant(assistant_name)
+        if response:
+            return response
+        else:
+            return False
+    except Exception as e:
+        return False
 
 def upload_to_pinecone_assistant(assistant, file_path):
     response = assistant.upload_file(
@@ -49,9 +70,9 @@ def upload_to_pinecone_assistant(assistant, file_path):
         print(f"Failed to upload {file_path}. Status code: {response.status_code}, Response: {response.text}")
 
 def main():
-    assistant = create_pinecone_assistant()
+    assistant = get_assistant(pinecone_assistant)
     if not assistant:
-        raise Exception("Assistant creation failed")
+        assistant = create_pinecone_assistant()
 
     blob_names = list_blobs_in_container()
 

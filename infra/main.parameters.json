@@ -1,27 +1,27 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-      "environmentName": {
-        "value": "dev"
-      },
-      "location": {
-        "value": "eastus"
-      },
-      "pineconeApiKey": {
-        "value": "your_pinecone_api_key"
-      },
-      "azureContainerName": {
-        "value": "your_container_name"
-      },
-      "azureStorageSubscription": {
-        "value": "your_subscription_id"
-      },
-      "pineconeAssistantName": {
-        "value": "your_assistant_name"
-      },
-      "keyVaultName": {
-        "value": "your_key_vault_name"
-      }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "dev"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "pineconeApiKey": {
+      "value": "your_pinecone_api_key"
+    },
+    "azureContainerName": {
+      "value": "your_container_name"
+    },
+    "azureStorageSubscription": {
+      "value": "your_subscription_id"
+    },
+    "pineconeAssistantName": {
+      "value": "your_assistant_name"
+    },
+    "keyVaultName": {
+      "value": "your_key_vault_name"
     }
   }
+}
