@@ -1,7 +1,11 @@
-from . import *
+from file_manager import *
 from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import ResourceExistsError
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def upload_blob(file_path):
     blob_service_client = BlobServiceClient.from_connection_string(storage_account_connection_string)

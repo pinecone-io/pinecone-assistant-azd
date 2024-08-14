@@ -72,3 +72,5 @@ merge_env_files "$env_local" "$env_azd" "$env_azure"
 
 python src/file_manager/upload_context.py
 python src/file_manager/initialize_assistant.py
+
+"$script_dir/../scripts/create_scheduler.sh"

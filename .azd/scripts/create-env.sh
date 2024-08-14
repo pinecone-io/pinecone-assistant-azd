@@ -10,7 +10,7 @@ remove_quotes() {
 # Function to read env vars from a file and store them in a global array
 read_env_vars() {
     local path=$1
-    local -a required_vars=("PINECONE_API_KEY" "PINECONE_ASSISTANT_NAME" "PINECONE_REGION" "AZURE_CONTAINER_NAME" "AZURE_STORAGE_SUBSCRIPTION")
+    local -a required_vars=("PINECONE_API_KEY" "PINECONE_ASSISTANT_NAME" "PINECONE_REGION" "AZURE_CONTAINER_NAME" "AZURE_SUBSCRIPTION")
     local -a temp_vars=()
 
     if [[ ! -f $path ]]; then

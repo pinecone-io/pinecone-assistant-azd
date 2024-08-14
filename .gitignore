@@ -11,6 +11,7 @@ node_modules/
 .env.azure
 .env
 .venv
+*.pyc
 
 next-env.d.ts
 npm-debug.log*

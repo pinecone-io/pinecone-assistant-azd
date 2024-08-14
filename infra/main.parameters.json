@@ -19,9 +19,6 @@
     },
     "pineconeAssistantName": {
       "value": "your_assistant_name"
-    },
-    "keyVaultName": {
-      "value": "your_key_vault_name"
     }
   }
 }

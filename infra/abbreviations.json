@@ -55,7 +55,7 @@
     "insightsActionGroups": "ag",
     "insightsComponents": "appi",
     "insightsLogAnalyticsWorkspace": "logws",
-    "keyVaultVaults": "kv",
+    "keyVault": "kv",
     "kubernetesConnectedClusters": "arck",
     "kustoClusters": "dec",
     "kustoClustersDatabases": "dedb",

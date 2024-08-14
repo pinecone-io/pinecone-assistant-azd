@@ -22,6 +22,7 @@ param containerAppName string = ''
 param containerRegistryName string = ''
 param logAnalyticsWorkspaceName string = ''
 param resourceGroupName string = ''
+param keyVaultName string = ''
 
 param webAppServiceCdnEndpointName string = ''
 param webAppServiceCdnProfileName string = ''
@@ -72,8 +73,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
   tags: tags
 }
-
-// Deploy resources to the resource group
 
 module logAnalyticsWorkspace './insights/log-analytics-workspace.bicep' = {
   name: 'logAnalyticsWorkspace'
@@ -254,6 +253,29 @@ module azureBlobStorage './storage/azure-blob-storage.bicep' = {
     location: location
     tags: tags
     containerName: envVars.AZURE_STORAGE_CONTAINER_NAME
+  }
+}
+
+
+module scheduler './scheduler.bicep' = {
+  name: 'scheduler'
+  scope: resourceGroup
+  params: {
+    location: location
+    storageAccountName: azureBlobStorage.outputs.storageAccountName
+    functionAppName: 'scheduler-function-app'
+    appServicePlanName: 'scheduler-plan'
+    keyVaultName: keyVaultName
+  }
+}
+
+module keyVault 'security/keyvault.bicep' = {
+  name: 'keyVault'
+  scope: resourceGroup
+  params: {
+    name: !empty(keyVaultName) ? keyVaultName : buildProjectResourceName(abbrs.keyVault, projectName, environmentName, resourceToken, false)
+    location: location
+    tags: tags
   }
 }
 
