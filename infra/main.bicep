@@ -250,10 +250,10 @@ module azureBlobStorage './storage/azure-blob-storage.bicep' = {
   name: 'azureBlobStorage'
   scope: resourceGroup
   params: {
-    name: buildProjectResourceName(abbrs.storageStorageAccounts, projectName, environmentName, resourceToken, true)
+    name: replace(buildProjectResourceName(abbrs.storageStorageAccounts, projectName, environmentName, resourceToken, false), '-', '')
     location: location
     tags: tags
-    containerName: envVars.AZURE_CONTAINER_NAME
+    containerName: envVars.AZURE_STORAGE_CONTAINER_NAME
   }
 }
 
