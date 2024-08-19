@@ -11,14 +11,6 @@ import logging
 from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 
-# Initialize the Key Vault client
-key_vault_name = os.getenv("AZURE_KEY_VAULT_NAME")
-key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
-credential = DefaultAzureCredential()
-client = SecretClient(vault_url=key_vault_uri, credential=credential)
-# Fetch the Instrumentation Key from Key Vault
-instrumentation_key = client.get_secret("InstrumentationKey").value
-
 # Configure logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -26,12 +18,25 @@ logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=<your_in
 
 # Fetching environment variables
 load_dotenv('.env.azure', override=True)
+key_vault_name = os.getenv("AZURE_KEY_VAULT_NAME")
 subscription_id = os.getenv("AZURE_SUBSCRIPTION_ID")
 resource_group_name = os.getenv("AZURE_RESOURCE_GROUP")
 storage_account_name = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
 container_name = os.getenv("AZURE_STORAGE_CONTAINER_NAME")
 pinecone_api_key = os.getenv("PINECONE_API_KEY")
 asst_name = os.getenv("PINECONE_ASSISTANT_NAME")
+
+# Initialize the Key Vault client
+try:
+    key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
+    credential = DefaultAzureCredential()
+    client = SecretClient(vault_url=key_vault_uri, credential=credential)
+    # Fetch the Instrumentation Key from Key Vault
+    instrumentation_key = client.get_secret("InstrumentationKey").value
+except Exception as e:
+    print(f"Something went wrong getting the key vault, error was {e}")
+    logger.error(f"Something went wrong getting the key vault, error was {e}")
+    exit(1)
 
 # Initialize Pinecone client
 pc = Pinecone(api_key=pinecone_api_key)

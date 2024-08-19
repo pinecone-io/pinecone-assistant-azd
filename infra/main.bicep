@@ -23,6 +23,7 @@ param containerRegistryName string = ''
 param logAnalyticsWorkspaceName string = ''
 param resourceGroupName string = ''
 param keyVaultName string = ''
+param keyVaultUri string = ''
 
 param webAppServiceCdnEndpointName string = ''
 param webAppServiceCdnProfileName string = ''
@@ -266,6 +267,7 @@ module scheduler './scheduler.bicep' = {
     functionAppName: 'scheduler-function-app'
     appServicePlanName: 'scheduler-plan'
     keyVaultName: keyVaultName
+    keyVaultUri: keyVaultUri
   }
 }
 
@@ -283,6 +285,8 @@ module keyVault 'security/keyvault.bicep' = {
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output AZURE_RESOURCE_GROUP string = resourceGroup.name
+output keyVaultName string = keyVault.outputs.keyVaultName
+output keyVaultUri string = keyVault.outputs.keyVaultUri
 
 // Container outputs
 output AZURE_CONTAINER_ENVIRONMENT_NAME string = containerAppEnvironment.outputs.name

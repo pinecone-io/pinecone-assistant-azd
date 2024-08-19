@@ -1,8 +1,8 @@
 {
-    "scriptFile": "scheduler.py",
+    "scriptFile": "poller.py",
     "bindings": [
       {
-        "name": "mytimer",
+        "name": "file_poller",
         "type": "timerTrigger",
         "direction": "in",
         "schedule": "0 */5 * * * *"

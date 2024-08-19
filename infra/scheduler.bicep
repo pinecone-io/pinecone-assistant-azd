@@ -3,13 +3,10 @@ param storageAccountName string
 param functionAppName string
 param appServicePlanName string
 param keyVaultName string
+param keyVaultUri string
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
-}
-
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: keyVaultName
 }
 
 resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
@@ -34,7 +31,11 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           name: 'AZURE_KEY_VAULT_NAME'
-          value: keyVault.name
+          value: keyVaultName
+        }
+        {
+          name: 'AZURE_KEY_VAULT_URI'
+          value: keyVaultUri
         }
       ]
     }
@@ -51,7 +52,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
 }
 
 resource timerTrigger 'Microsoft.Web/sites/functions@2021-02-01' = {
-  name: 'TimerTrigger'
+  name: 'file_poller'
   parent: functionApp
   properties: {
     config: {
