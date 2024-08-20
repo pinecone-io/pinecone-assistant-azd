@@ -56,9 +56,6 @@ jobs:
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Preprovision Environment
-        run: ./.azd/hooks/preprovision.sh
-
       - name: Provision Infrastructure
         run: azd provision --no-prompt
         env:
@@ -66,18 +63,9 @@ jobs:
           AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
           AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Postprovision Environment
-        run: ./.azd/hooks/postprovision.sh
-
-      - name: Predeploy Environment
-        run: ./.azd/hooks/predeploy.sh
-
       - name: Deploy Application
         run: azd deploy --no-prompt
         env:
           AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
           AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Postdeploy Environment
-        run: ./.azd/hooks/postdeploy.sh
