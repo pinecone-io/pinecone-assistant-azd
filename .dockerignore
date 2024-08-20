@@ -1,0 +1,9 @@
+.git
+.next
+.vscode
+node_modules
+Dockerfile
+npm-debug.log
+README.md
+TODO.md
+pnpm-lock.yaml

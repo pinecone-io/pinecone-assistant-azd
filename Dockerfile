@@ -1,4 +1,6 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
+RUN apk update && apk add --no-cache libc6-compat
+RUN corepack enable && corepack prepare pnpm@7.4.1 --activate 
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -6,26 +8,28 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+RUN npm install -g pnpm
+RUN pnpm env use --global 20
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN \
-  if [ -f package-lock.json ]; then npm ci; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+#COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY ./.env.azure ./.env.local
+
+# Debugging step: Print the contents of .env.local
+RUN cat ./.env.local
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN npm run build
+RUN pnpm install
+RUN pnpm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -36,23 +40,20 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+#RUN addgroup --system --gid 1001 nodejs
+#RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+#COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+#COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# pino-appinsights-transport is not being included in the standalone build because it is not picked up by the static analyser
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/pino-appinsights-transport ./node_modules/pino-appinsights-transport
-
-USER nextjs
+#USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["pnpm", "run", "start"]

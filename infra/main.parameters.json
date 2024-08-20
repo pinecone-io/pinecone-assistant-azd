@@ -14,9 +14,6 @@
     "azureContainerName": {
       "value": "your_container_name"
     },
-    "azureStorageSubscription": {
-      "value": "your_subscription_id"
-    },
     "pineconeAssistantName": {
       "value": "your_assistant_name"
     }

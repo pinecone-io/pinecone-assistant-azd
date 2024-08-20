@@ -22,8 +22,6 @@ param containerAppName string = ''
 param containerRegistryName string = ''
 param logAnalyticsWorkspaceName string = ''
 param resourceGroupName string = ''
-param keyVaultName string = ''
-param keyVaultUri string = ''
 
 param webAppServiceCdnEndpointName string = ''
 param webAppServiceCdnProfileName string = ''
@@ -246,47 +244,12 @@ module webAppServiceContainerApp './web-app.bicep' = {
   }
 }
 
-module azureBlobStorage './storage/azure-blob-storage.bicep' = {
-  name: 'azureBlobStorage'
-  scope: resourceGroup
-  params: {
-    name: replace(buildProjectResourceName(abbrs.storageStorageAccounts, projectName, environmentName, resourceToken, false), '-', '')
-    location: location
-    tags: tags
-    containerName: envVars.AZURE_STORAGE_CONTAINER_NAME
-  }
-}
-
-
-module scheduler './scheduler.bicep' = {
-  name: 'scheduler'
-  scope: resourceGroup
-  params: {
-    location: location
-    storageAccountName: azureBlobStorage.outputs.storageAccountName
-    functionAppName: 'scheduler-function-app'
-    appServicePlanName: 'scheduler-plan'
-    keyVaultName: keyVaultName
-    keyVaultUri: keyVaultUri
-  }
-}
-
-module keyVault 'security/keyvault.bicep' = {
-  name: 'keyVault'
-  scope: resourceGroup
-  params: {
-    name: !empty(keyVaultName) ? keyVaultName : buildProjectResourceName(abbrs.keyVault, projectName, environmentName, resourceToken, false)
-    location: location
-    tags: tags
-  }
-}
-
 // azd outputs
+output AZURE_RESOURCE_GROUP string = resourceGroup.name
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
-output AZURE_RESOURCE_GROUP string = resourceGroup.name
-output keyVaultName string = keyVault.outputs.keyVaultName
-output keyVaultUri string = keyVault.outputs.keyVaultUri
+output APP_INSIGHTS_NAME string = appInsights.outputs.name
+output APPLICATIONINSIGHTS_CONNECTION_STRING string = appInsights.outputs.connectionString
 
 // Container outputs
 output AZURE_CONTAINER_ENVIRONMENT_NAME string = containerAppEnvironment.outputs.name
@@ -296,7 +259,6 @@ output AZURE_CONTAINER_STATIC_IP string = containerAppEnvironment.outputs.static
 output AZURE_CONTAINER_DOMAIN_VERIFICATION_CODE string = containerAppEnvironment.outputs.domainVerificationCode
 
 // Web app outputs
-output APPLICATIONINSIGHTS_CONNECTION_STRING string = appInsights.outputs.connectionString
 output AZURE_WEB_APP_FQDN string = webAppServiceContainerApp.outputs.fqdn
 output NEXT_PUBLIC_APP_ENV string = environmentName
 output NEXT_PUBLIC_APPLICATIONINSIGHTS_CONNECTION_STRING string = appInsights.outputs.connectionString
@@ -305,8 +267,3 @@ output NEXT_PUBLIC_BUILD_ID string = buildId
 output NEXT_PUBLIC_CDN_HOSTNAME string = webAppServiceCdn.outputs.endpointHostName
 output NEXT_PUBLIC_CDN_URL string = webAppServiceCdn.outputs.endpointUri
 output SERVICE_WEB_ENDPOINTS string[] = [webAppServiceUri]
-
-// Blob storage outputs
-output AZURE_STORAGE_ACCOUNT_NAME string = azureBlobStorage.outputs.storageAccountName
-output AZURE_STORAGE_CONTAINER_NAME string = azureBlobStorage.outputs.containerName
-output AZURE_STORAGE_ACCOUNT_ENDPOINT string = azureBlobStorage.outputs.storageAccountEndpoint
