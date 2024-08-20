@@ -33,6 +33,15 @@ logger.addHandler(AzureLogHandler(connection_string=f'InstrumentationKey={instru
 # Initialize Pinecone client
 pc = Pinecone(api_key=pinecone_api_key)
 
+def get_files_to_process(directory, processed_files_path):
+    all_files = [f for f in os.listdir(directory) if f.endswith('.pdf') or f.endswith('.txt')]
+    if os.path.exists(processed_files_path):
+        with open(processed_files_path, 'r') as file:
+            processed_files = file.read().splitlines()
+    else:
+        processed_files = []
+    return [f for f in all_files if f not in processed_files]
+
 def upload_to_pinecone_assistant(assistant, file_path):
     if file_path.endswith(".pdf") or file_path.endswith(".txt"):
         response = assistant.upload_file(
