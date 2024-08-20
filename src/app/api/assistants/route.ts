@@ -1,46 +1,80 @@
-import { NextResponse } from 'next/server';
-import { checkAssistantPrerequisites } from '../../utils/assistantUtils';
+import { NextResponse } from 'next/server'
+import { checkAssistantPrerequisites } from '../../utils/assistantUtils'
 
 export async function GET() {
-  const { apiKey, assistantName } = await checkAssistantPrerequisites();
+  const { apiKey, assistantName } = await checkAssistantPrerequisites()
   
   if (!apiKey || !assistantName) {
     return NextResponse.json({
       status: "error",
       message: "PINECONE_API_KEY and PINECONE_ASSISTANT_NAME are required.",
       exists: false
-    }, { status: 400 });
+    }, { status: 400 })
   }
 
   try {
-    const response = await fetch('https://api.pinecone.io/assistant/assistants', {
+    const response = await fetch(`https://api.pinecone.io/assistant/assistants/${assistantName}`, {
       method: 'GET',
       headers: {
         'Api-Key': apiKey,
       },
-    });
+    })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (response.status === 404) {
+      console.log('Assistant not found, creating...')
+      const createResponse = await fetch('https://api.pinecone.io/assistant/assistants', {
+        method: 'POST',
+        headers: {
+          'Api-Key': apiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: assistantName,
+          metadata: {}
+        })
+      })
+
+      if (!createResponse.ok) {
+        throw new Error(`HTTP error! status: ${createResponse.status}`)
+      }
+
+      return NextResponse.json({
+        status: "success",
+        message: `Assistant '${assistantName}' created successfully.`,
+        exists: true,
+        assistant_name: assistantName
+      }, { status: 201 })
+    } else if (response.status === 401) {
+      return NextResponse.json({
+        status: "error",
+        message: "Permission denied. Check your API key.",
+        exists: false
+      }, { status: 401 })
+    } else if (response.status === 500) {
+      return NextResponse.json({
+        status: "error",
+        message: "Server error. Please try again later.",
+        exists: false
+      }, { status: 500 })
+    } else if (response.ok) {
+      const data = await response.json()
+      //const assistantExists = data.assistants.some((assistant: any) => assistant.name === assistantName)
+
+      return NextResponse.json({
+        status: "success",
+        message: `Assistant '${assistantName}' check completed.`,
+        exists: true,
+        assistant_name: assistantName
+      }, { status: 200 })
+    } else {
+      throw new Error(`Unexpected response status: ${response.status}`)
     }
-
-    // List the assistants and check if the aassistant targeted by process.env.PINECONE_ASSISTANT_NAME exists
-    const assistants = await response.json();
-    const assistantExists = assistants.assistants.some((assistant: any) => assistant.name === assistantName);
-
-    return NextResponse.json({
-      status: "success",
-      message: `Assistant '${assistantName}' check completed.`,
-      exists: assistantExists,
-      assistant_name: assistantName
-    }, { status: 200 });
-
   } catch (error) {
-    console.error(`Error: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(`Error: ${error instanceof Error ? error.message : String(error)}`)
     return NextResponse.json({
       status: "error",
       message: `Failed to check assistant: ${error instanceof Error ? error.message : String(error)}`,
       exists: false
-    }, { status: 500 });
+    }, { status: 500 })
   }
 }

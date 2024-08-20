@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: pinecone-assistant-azd
+metadata:
+    template: pinecone-assistant-azd@0.0.1
+services:
+    web:
+        project: ./
+        host: containerapp
+        language: ts
+hooks:
+    preprovision:
+        windows:
+            shell: pwsh
+            run: ./.azd/hooks/preprovision.ps1
+        posix:
+            shell: sh
+            run: ./.azd/hooks/preprovision.sh
+    postprovision:
+        windows:
+            shell: pwsh
+            run: ./.azd/hooks/postprovision.ps1
+        posix:
+            shell: sh
+            run: ./.azd/hooks/postprovision.sh
+parameters:
+    environmentName: "[parameters('environmentName')]"
+    location: "[parameters('location')]"
+    azureContainerName: "[parameters('azureContainerName')]"
+    azureStorageSubscription: "[parameters('azureStorageSubscription')]"
+    pineconeApiKey: "[parameters('pineconeApiKey')]"
+    pineconeAssistantName: "[parameters('pineconeAssistantName')]"
+    keyVaultName: "[parameters('keyVaultName')]"
