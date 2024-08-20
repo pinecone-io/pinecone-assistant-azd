@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "env:init": "bash ./.azd/scripts/create-env.sh",
+    "env:init": "bash ./.azd/scripts/create-env.sh && ./.azd/scripts/create-infra-env-vars.sh",
     "env:dv": "bash ./.azd/scripts/read-domain-verification-vars.sh",
     "start": "next start -p 80",
     "lint": "next lint"
