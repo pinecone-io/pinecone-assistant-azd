@@ -78,15 +78,19 @@ read_env_vars "$env_local_path"
 output_path="$script_dir/../../infra/env-vars.json"
 
 # Convert the env_vars array to JSON format and write to output_path using jq
-echo '{' > "$output_path"
+#echo '{' > "$output_path"
+#for entry in "${env_vars[@]}"; do
+#    key=$(echo "$entry" | cut -d'=' -f1)
+#    value=$(echo "$entry" | cut -d'=' -f2-)
+#    echo "  \"$key\": \"$value\"," >> "$output_path"
+#done
+# Remove the trailing comma and close the JSON object
+#sed -i '' -e '$ s/,$//' "$output_path"
+#echo '}' >> "$output_path"
+
+echo '{}' | jq '.' > "$output_path"
 for entry in "${env_vars[@]}"; do
     key=$(echo "$entry" | cut -d'=' -f1)
     value=$(echo "$entry" | cut -d'=' -f2-)
-    echo "  \"$key\": \"$value\"," >> "$output_path"
+    jq --arg key "$key" --arg value "$value" '.[$key] = $value' "$output_path" > "$output_path.tmp" && mv "$output_path.tmp" "$output_path"
 done
-# Remove the trailing comma and close the JSON object
-sed -i '' -e '$ s/,$//' "$output_path"
-echo '}' >> "$output_path"
-
-# Verify the content of the output file
-#cat "$output_path"
