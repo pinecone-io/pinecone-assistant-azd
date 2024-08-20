@@ -38,5 +38,3 @@ if (!(Test-Path $envLocal -PathType Leaf)) {
 
 # Merge the azd env file (output from running `azd provision`) with the local env file - if there are duplicate keys the values from the azd env file will take precedence
 Merge-EnvFiles -base $envLocal -with $envAzd -output $envAzure
-
-python src/file_manager/initialize_assistant.py

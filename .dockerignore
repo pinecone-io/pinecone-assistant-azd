@@ -6,4 +6,4 @@ Dockerfile
 npm-debug.log
 README.md
 TODO.md
-pnpm-lock.yaml
+#pnpm-lock.yaml

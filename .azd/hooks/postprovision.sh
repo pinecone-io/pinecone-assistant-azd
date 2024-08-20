@@ -69,5 +69,3 @@ if [[ ! -f $env_local ]]; then
 fi
 
 merge_env_files "$env_local" "$env_azd" "$env_azure"
-
-python src/file_manager/initialize_assistant.py

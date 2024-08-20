@@ -1,5 +1,6 @@
 #!/bin/bash
 
+required_vars=("PINECONE_API_KEY" "PINECONE_ASSISTANT_NAME")
 # Function to remove quotes from a value
 remove_quotes() {
     local value=$1
@@ -10,7 +11,6 @@ remove_quotes() {
 # Function to read env vars from a file and store them in a global array
 read_env_vars() {
     local path=$1
-    local -a required_vars=("PINECONE_API_KEY" "PINECONE_ASSISTANT_NAME" "PINECONE_REGION" "AZURE_CONTAINER_NAME" "AZURE_SUBSCRIPTION")
     local -a temp_vars=()
 
     if [[ ! -f $path ]]; then
@@ -35,16 +35,6 @@ read_env_vars() {
         # Remove quotes
         value=$(remove_quotes "$value" '"')
         value=$(remove_quotes "$value" "'")
-
-        # Check for the required environment variables, if one is blank throw an error
-        if [[ " ${required_vars[@]} " =~ " ${key} " ]] && [[ -z $value ]]; then
-            if [[ -z ${!key} ]]; then
-                echo "$key is not set in the current environment, please supply it."
-                exit 1
-            else
-                value=${!key}
-            fi
-        fi
 
         # Store the key-value pair in the temp array
         temp_vars+=("$key=$value")
@@ -75,11 +65,12 @@ update_env_var() {
     local var_name=$1
     local var_value=$2
     for i in "${!env_vars[@]}"; do
-        if [[ "${env_vars[$i]}" == "$var_name" ]]; then
+        if [[ "${env_vars[$i]}" == "$var_name="* ]]; then
             env_vars[$i]="$var_name=\"$var_value\""
             return
         fi
     done
+    env_vars+=("$var_name=\"$var_value\"")
 }
 
 # Initialize the env_vars array
@@ -105,10 +96,10 @@ fi
 read_env_vars "$template_path"
 
 # Check for required environment variables
-
 for entry in "${required_vars[@]}"; do
     if [[ -z ${!entry} ]]; then
-        echo "${entry} is not set in the current environment, please supply it."
+        echo -n "$entry is not set in the current environment, please supply it: "
+        read -r line
         update_env_var "$entry" "$line"
     fi
 done

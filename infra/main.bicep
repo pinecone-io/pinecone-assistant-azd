@@ -240,7 +240,7 @@ module webAppServiceContainerApp './web-app.bicep' = {
         value: azureSubscription
       }
     ]
-    targetPort: 3000
+    targetPort: 80
   }
 }
 
