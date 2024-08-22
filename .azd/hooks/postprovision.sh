@@ -59,17 +59,16 @@ merge_env_files() {
 script_dir="$(dirname "$(readlink -f "$0")")"
 
 env_local="$script_dir/../../.env.local"
-if [ -z $AZURE_ENV_NAME ]; then
-    # The Azure environment hasn't been set yet. Check if there's a directory under .azure and use that. Otherwise, prompt for one.
-    num_envs=$(ls .azure/ | grep -v -e .gitignore -e config.json | wc -l)
-    if [ $num_envs = 1 ];then
-        export AZURE_ENV_NAME=`ls .azure/ | grep -v -e .gitignore -e config.json | sed -e 's/\///'`
-    else
-        echo -n "Unable to determine AZURE_ENV_NAME, please provide it: "
+
+# If AZURE_ENV_NAME isn't set get it from azd. Failing that, prompt for it.
+if [ -z $AZURE_ENV_NAME ];then 
+    AZURE_ENV_NAME=$(azd env get-values | grep AZURE_ENV_NAME | awk -F= '{print $NF}' | sed -e 's/"//g')
+    if [ -z $AZURE_ENV_NAME ]; then
+        echo -n "AZURE_ENV_NAME not set, please provide: "
         read value
-        export AZURE_ENV_NAME=$value
+        AZURE_ENV_NAME=$value
     fi
-fi
+fi    
 
 env_azd="$script_dir/../../.azure/${AZURE_ENV_NAME}/.env"
 
