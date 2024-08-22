@@ -66,11 +66,11 @@ update_env_var() {
     local var_value=$2
     for i in "${!env_vars[@]}"; do
         if [[ "${env_vars[$i]}" == "$var_name="* ]]; then
-            env_vars[$i]="$var_name=\"$var_value\""
+            env_vars[$i]="$var_name=$var_value"
             return
         fi
     done
-    env_vars+=("$var_name=\"$var_value\"")
+    env_vars+=("$var_name=$var_value")
 }
 
 # Initialize the env_vars array
@@ -99,8 +99,8 @@ read_env_vars "$template_path"
 for entry in "${required_vars[@]}"; do
     if [[ -z ${!entry} ]]; then
         echo -n "$entry is not set in the current environment, please supply it: "
-        read -r line
-        update_env_var "$entry" "$line"
+        read -r value
+        update_env_var "$entry" "$value"
     fi
 done
 
