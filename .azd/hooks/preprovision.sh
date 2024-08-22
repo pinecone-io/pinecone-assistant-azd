@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 script_dir="$(dirname "$(readlink -f "$0")")"
 
 # Run script to generate the environment variables in .env
