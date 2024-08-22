@@ -59,6 +59,17 @@ merge_env_files() {
 script_dir="$(dirname "$(readlink -f "$0")")"
 
 env_local="$script_dir/../../.env.local"
+
+# If AZURE_ENV_NAME isn't set get it from azd. Failing that, prompt for it.
+if [ -z $AZURE_ENV_NAME ];then 
+    AZURE_ENV_NAME=$(azd env get-values | grep AZURE_ENV_NAME | awk -F= '{print $NF}' | sed -e 's/"//g')
+    if [ -z $AZURE_ENV_NAME ]; then
+        echo -n "AZURE_ENV_NAME not set, please provide: "
+        read value
+        AZURE_ENV_NAME=$value
+    fi
+fi    
+
 env_azd="$script_dir/../../.azure/${AZURE_ENV_NAME}/.env"
 
 env_azure="$script_dir/../../.env.azure"

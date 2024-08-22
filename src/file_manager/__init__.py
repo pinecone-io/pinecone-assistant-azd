@@ -54,3 +54,14 @@ def upload_to_pinecone_assistant(assistant, file_path):
             logger.error(f"Failed to upload {file_path}. Status code: {response.status}, Response: {response.error}")
     else:
         logger.error(f"Invalid file type, skipping {file_path}.")
+
+def get_assistant(asst_name):
+    try:
+        assistant = pc.assistant.describe_assistant(assistant_name=asst_name)
+        while assistant.status == "Initializing":
+            time.sleep(1)
+        return assistant
+    except Exception as e:
+        print(f"Exception when describing assistant {asst_name}, error {e}")
+        return False
+import os

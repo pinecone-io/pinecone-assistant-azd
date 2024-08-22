@@ -1,3 +1,9 @@
+import os
+import sys
+
+# Add the project root to PYTHONPATH
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from file_manager import *
 import os, time
 import logging

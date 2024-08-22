@@ -1,8 +1,15 @@
+import os
+import sys
+
+# Add the project root to PYTHONPATH
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from file_manager import *
 import os, time
 import logging
 
 def main():
+    assistant = get_assistant(asst_name)
     assets_directory = os.path.join(os.getcwd(), "assets")
     processed_files_path = os.path.join(assets_directory, "processed_files")
     

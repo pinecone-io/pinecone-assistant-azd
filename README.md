@@ -20,7 +20,7 @@ The quickest way to try this `azd` template out is using [GitHub Codespaces](htt
 [![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Open&color=brightgreen&logo=github)](https://github.com/codespaces/new/pinecone-io/pinecone-assistant-azd)
 [![Open in Dev Container](https://img.shields.io/static/v1?style=for-the-badge&label=Dev+Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/pinecone-io/pinecone-assistant-azd)
 
-You can also get started quickly using a terminal. Simply run `azd init -t pinecone-assistant-azd` to clone the project.
+You can also get started quickly using a terminal. Simply run `azd init -t pinecone-io/pinecone-assistant-azd` to clone the project.
 
 ### Create a Pinecone API key
 
@@ -82,6 +82,13 @@ azd provision
 # deploy the app to the provisioned infrastructure
 azd deploy
 ```
+
+**Note:**
+> If deployment fails initially, try running
+```bash
+sh ./.azd/hooks/postprovision
+```
+> to make sure your environment is setup properly.
 
 This will provision the necessary Azure resources, run the Python import script to seed your new assistant with the sample PDFs in /assets, and deploy the application to Azure.
 

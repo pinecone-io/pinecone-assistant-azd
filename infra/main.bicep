@@ -3,7 +3,7 @@ targetScope = 'subscription'
 @minLength(1)
 @maxLength(6)
 @description('Name of the the environment e.g. `dev`, `uat`, `prod`')
-param environmentName string
+param environmentName string 
 
 @minLength(1)
 @description('Primary location for all resources')
@@ -33,6 +33,8 @@ var abbrs = loadJsonContent('./abbreviations.json')
 
 // This file is created by a `preprovision` hook - if you're seeing an error here and elsewhere because this file doesn't exist, run `.azd/scripts/create-infra-env-vars.ps1` directly or via `azd provision` to create the file
 var envVars = loadJsonContent('./env-vars.json')
+
+// Conditionally set environmentName if it is empty
 
 var projectName = envVars.PROJECT_NAME
 var webAppServiceName = envVars.SERVICE_WEB_SERVICE_NAME
