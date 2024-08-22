@@ -24,3 +24,5 @@ TODO.md
 
 tmp/*
 src/**/__pycache__/
+
+assets/processed_files
