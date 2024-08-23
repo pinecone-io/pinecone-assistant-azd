@@ -53,10 +53,19 @@ Before doing anything else be sure to clone the repo.
 
 In order to isolate Python dependencies, create a virtual environment and install the dependencies there.
 
+MacOS or Linux:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
+
+Windows:
+```pwsh
+python -m venv .venv
+.venv\Scripts\activate
+```
+
 
 #### Dependency Installation
 
