@@ -67,10 +67,10 @@ function Merge-Objects {
                 $merged[$_.Key] = $baseValue
             } else {
                 # Overwrite the base value
-                $merged[$_.Key] = $null -eq $withValue ? "" : $withValue
+                $merged[$_.Key] = if ($null -eq $withValue) { "" } else { $withValue }
             }
         } else {
-            $merged[$_.Key] = $null -eq $withValue ? "" : $withValue
+            $merged[$_.Key] = if ($null -eq $withValue) { "" } else { $withValue }
         }
     }
 
