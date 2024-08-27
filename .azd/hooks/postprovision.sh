@@ -8,6 +8,10 @@ merge_env_files() {
     local -a temp_vars=()
     local -a merged_vars=()
 
+    # Create temporary file
+    local temp_file=$(mktemp)
+    cat "$base" "$with" > "$temp_file"
+
     while IFS= read -r line || [ -n "$line" ]; do
         # Remove comments and trim whitespace
         line=$(echo "$line" | cut -d'#' -f1 )
@@ -27,7 +31,7 @@ merge_env_files() {
 
         # Store the key-value pair in the temp array
         temp_vars+=("$key=$value")
-    done < <(cat "$base" "$with")
+    done < "$temp_file"
 
     for entry in "${temp_vars[@]}"; do
         key=$(echo "$entry" | cut -d'=' -f1)
@@ -54,6 +58,8 @@ merge_env_files() {
             echo "$key=$value"
         done | sort
     } > "$output"
+
+    rm "$temp_file"
 }
 
 script_dir="$(dirname "$(readlink -f "$0")")"

@@ -15,6 +15,9 @@ hooks:
     postprovision:
         shell: sh
         run: ./.azd/hooks/postprovision.sh
+    predeploy:
+        shell: sh
+        run: ./.azd/hooks/predeploy.sh
 parameters:
     environmentName: "[parameters('environmentName')]"
     location: "[parameters('location')]"
