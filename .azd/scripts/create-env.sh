@@ -101,6 +101,8 @@ for entry in "${required_vars[@]}"; do
         echo -n "$entry is not set in the current environment, please supply it: "
         read -r value
         update_env_var "$entry" "$value"
+    else 
+        update_env_var "$entry" "${!entry}"
     fi
 done
 
