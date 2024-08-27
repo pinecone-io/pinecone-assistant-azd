@@ -52,24 +52,7 @@ SHOW_CITATIONS=true
 
 ### Start the project
 
-Before doing anything else be sure to clone the repo.
-
-In order to isolate Python dependencies, create a virtual environment and install the dependencies there.
-
-MacOS or Linux:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-#### Dependency Installation
-
-```bash
-pip install -r requirements.txt
-```
-
-Then, deploy the app:
+Before doing anything else be sure to clone the repo. Then, deploy the app:
 
 ```bash
 # follow the prompts to sign in to your Azure account
@@ -87,6 +70,9 @@ azd provision
 # deploy the app to the provisioned infrastructure
 azd deploy
 ```
+
+**Note:**
+> Be sure to use an Azure environment name =< 6 characters or the deployment will fail.
 
 **Note:**
 > If deployment fails initially, try running
