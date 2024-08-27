@@ -20,6 +20,7 @@ hooks:
 parameters:
     environmentName: "[parameters('environmentName')]"
     location: "[parameters('location')]"
+    azureSubscriptionId: "[parameters]('azureSubscriptionId')"
     azureContainerName: "[parameters('azureContainerName')]"
     azureStorageSubscription: "[parameters('azureStorageSubscription')]"
     pineconeApiKey: "[parameters('pineconeApiKey')]"
