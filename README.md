@@ -22,6 +22,9 @@ The quickest way to try this `azd` template out is using [GitHub Codespaces](htt
 
 You can also get started quickly using a terminal. Simply run `azd init -t pinecone-io/pinecone-assistant-azd` to clone the project.
 
+**Note**
+> This template is only guaranteed to work on MacOS or Linux. It lacks Windows support, so if you would like to add that, please feel free to do so and submit a PR.
+
 ### Create a Pinecone API key
 
 **Grab an API key [here](https://app.pinecone.io/-/projects/-/keys)**
@@ -49,7 +52,7 @@ SHOW_CITATIONS=true
 
 ### Start the project
 
-Before doing anything else be sure to clone the repo. 
+Before doing anything else be sure to clone the repo.
 
 In order to isolate Python dependencies, create a virtual environment and install the dependencies there.
 
@@ -61,11 +64,11 @@ source .venv/bin/activate
 ```
 
 Windows:
+
 ```pwsh
 python -m venv .venv
 .venv\Scripts\activate
 ```
-
 
 #### Dependency Installation
 
@@ -94,9 +97,11 @@ azd deploy
 
 **Note:**
 > If deployment fails initially, try running
+
 ```bash
-sh ./.azd/hooks/postprovision
+sh ./.azd/hooks/postprovision.sh
 ```
+
 > to make sure your environment is setup properly.
 
 This will provision the necessary Azure resources, run the Python import script to seed your new assistant with the sample PDFs in /assets, and deploy the application to Azure.
