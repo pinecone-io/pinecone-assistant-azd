@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "env:init": "python ./.azd/scripts/create-env.sh",
-    "env:dv": "python ./.azd/scripts/read-domain-verification-vars.sh",
-    "env:post": "python ./.azd/hooks/postprovision.sh",
+    "env:init": "bash ./.azd/scripts/create-env.sh",
+    "env:dv": "bash ./.azd/scripts/read-domain-verification-vars.sh",
+    "env:post": "bash ./.azd/hooks/postprovision.sh",
     "start": "next start -p 80",
     "lint": "next lint"
   },
