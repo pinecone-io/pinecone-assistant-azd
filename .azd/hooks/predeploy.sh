@@ -6,7 +6,7 @@ env_azure="$script_dir/../../.env.azure"
 
 if [[ ! -f $env_azure ]]; then
     echo ".env.azure not found. Running postprovision hook again."
-    sh "$script_dir/postprovision.sh"
+    bash "$script_dir/postprovision.sh"
 else
     echo ".env.azure exists."
 fi
