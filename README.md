@@ -63,13 +63,6 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-Windows:
-
-```pwsh
-python -m venv .venv
-.venv\Scripts\activate
-```
-
 #### Dependency Installation
 
 ```bash
