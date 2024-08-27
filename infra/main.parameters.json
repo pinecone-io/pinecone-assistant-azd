@@ -8,6 +8,9 @@
     "location": {
       "value": "eastus"
     },
+    "azureSubscriptionId": {
+      "value": "${AZURE_SUBSCRIPTION_ID}"
+    },
     "pineconeApiKey": {
       "value": "your_pinecone_api_key"
     },

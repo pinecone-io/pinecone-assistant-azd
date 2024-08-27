@@ -10,22 +10,18 @@ services:
         language: ts
 hooks:
     preprovision:
-        windows:
-            shell: pwsh
-            run: ./.azd/hooks/preprovision.ps1
-        posix:
-            shell: sh
-            run: ./.azd/hooks/preprovision.sh
+        shell: sh
+        run: ./.azd/hooks/preprovision.sh
     postprovision:
-        windows:
-            shell: pwsh
-            run: ./.azd/hooks/postprovision.ps1
-        posix:
-            shell: sh
-            run: ./.azd/hooks/postprovision.sh
+        shell: sh
+        run: ./.azd/hooks/postprovision.sh
+    predeploy:
+        shell: sh
+        run: ./.azd/hooks/predeploy.sh
 parameters:
     environmentName: "[parameters('environmentName')]"
     location: "[parameters('location')]"
+    azureSubscriptionId: "[parameters]('azureSubscriptionId')"
     azureContainerName: "[parameters('azureContainerName')]"
     azureStorageSubscription: "[parameters('azureStorageSubscription')]"
     pineconeApiKey: "[parameters('pineconeApiKey')]"

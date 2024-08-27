@@ -3,8 +3,9 @@ from azure.identity import DefaultAzureCredential
 from azure.mgmt.applicationinsights import ApplicationInsightsManagementClient
 from dotenv import load_dotenv
 from pinecone import Pinecone
+from pinecone.core.client.exceptions import UnauthorizedException
 from tqdm import tqdm
-import os, time
+import os, sys, time
 import logging
 
 from azure.identity import DefaultAzureCredential
@@ -32,6 +33,13 @@ logger.addHandler(AzureLogHandler(connection_string=f'InstrumentationKey={instru
 
 # Initialize Pinecone client
 pc = Pinecone(api_key=pinecone_api_key)
+# Check that the API key is valid
+try:
+    indexes = pc.list_indexes()
+except UnauthorizedException as e:
+    print(f'The API key "{pinecone_api_key}" is not valid, please be sure to use a valid Pinecone API key.')
+    print(f"Use https://app.pinecone.io/organizations/-/projects/-/keys to create or fetch a key.")
+    sys.exit(1)
 
 def get_files_to_process(directory, processed_files_path):
     all_files = [f for f in os.listdir(directory) if f.endswith('.pdf') or f.endswith('.txt')]
