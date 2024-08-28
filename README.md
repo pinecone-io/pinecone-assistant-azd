@@ -58,6 +58,9 @@ Before doing anything else be sure to clone the repo. Then, deploy the app:
 # follow the prompts to sign in to your Azure account
 azd auth login
 
+# initialize the project
+azd init
+
 # install dependencies
 npm i
 
