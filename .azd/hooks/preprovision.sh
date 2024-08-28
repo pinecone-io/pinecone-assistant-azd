@@ -16,7 +16,7 @@ echo "Installing depencencies from requirements.txt into virtual environment."
 $venv_dir/bin/python -m pip install -r $root_dir/requirements.txt -q
 
 # Run script to generate the environment variables in .env
-"$script_dir/../scripts/create-env.sh"
+bash "$script_dir/../scripts/create-env.sh"
 
 # Run script to generate an `env-vars.json` file used by the infra scripts
-"$script_dir/../scripts/create-infra-env-vars.sh"
+bash "$script_dir/../scripts/create-infra-env-vars.sh"
